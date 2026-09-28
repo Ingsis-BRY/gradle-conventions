@@ -1,27 +1,27 @@
 # Gradle Conventions
 
-Shared Gradle conventions for the projects that make up the architecture.
-
+Shared Gradle conventions for Kotlin and Spring Boot projects across multiple repositories.
 ## Why this repository exists
 
-As the system grows into a multi-project, microservice-oriented architecture, duplicating build and development configuration across repositories makes changes harder to maintain and conventions easier to diverge.
+As the system grows into a multi-project, microservice-oriented architecture, duplicating build and development setup across repositories makes changes harder to maintain and conventions easier to diverge.
 
-This repository centralizes common build and development configuration into reusable Gradle convention plugins.
+This repository centralizes common build practices and tooling into reusable Gradle convention plugins.
 
-Projects can apply the same conventions without copying configuration between repositories, while still keeping repository-specific configuration where it belongs.
+Projects can apply the same conventions without copying setup between repositories, while still keeping repository-specific configuration where it belongs.
 
 The goal is to keep projects consistent and maintainable while allowing each repository to focus on its own domain and application logic.
 
 ## Provided conventions
 
-| Convention           | Plugin ID                            | Description                                                              |
-| -------------------- | ------------------------------------ | ------------------------------------------------------------------------ |
-| Kotlin module        | `com.ingsisbry.kotlin-module`        | Common Kotlin/JVM, testing, Ktlint, Detekt and JaCoCo configuration      |
-| Kotlin application   | `com.ingsisbry.kotlin-application`   | Application convention built on top of the Kotlin module convention      |
-| Detekt               | `com.ingsisbry.detekt`               | Shared Detekt configuration with support for project-specific overrides  |
-| Coverage aggregation | `com.ingsisbry.coverage-aggregation` | Aggregated JaCoCo reports and project-wide coverage verification         |
-| Git hooks            | `com.ingsisbry.git-hooks`            | Installs a shared `pre-commit` hook that runs `./gradlew check`          |
-| Editor config        | `com.ingsisbry.editor-config`        | Installs the shared `.editorconfig` file when one does not already exist |
+| Convention              | Plugin ID                               | Description                                                                          |
+| ----------------------- | --------------------------------------- | ------------------------------------------------------------------------------------ |
+| Kotlin module           | `com.ingsisbry.kotlin-module`           | Common Kotlin/JVM, testing, Ktlint, Detekt and JaCoCo configuration                  |
+| Kotlin application      | `com.ingsisbry.kotlin-application`      | Application convention built on top of the Kotlin module convention                  |
+| Spring Boot application | `com.ingsisbry.spring-boot-application` | Spring Boot application convention built on top of the Kotlin application convention |
+| Detekt                  | `com.ingsisbry.detekt`                  | Shared Detekt configuration with support for project-specific overrides              |
+| Coverage aggregation    | `com.ingsisbry.coverage-aggregation`    | Aggregated JaCoCo reports and project-wide coverage verification                     |
+| Git hooks               | `com.ingsisbry.git-hooks`               | Installs a shared `pre-commit` hook that runs `./gradlew check`                      |
+| Editor config           | `com.ingsisbry.editor-config`           | Installs the shared `.editorconfig` file when one does not already exist             |
 
 ## Usage
 
@@ -31,7 +31,7 @@ For example:
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.kotlin-module") version "1.0"
+    id("com.ingsisbry.kotlin-module") version "1.0.0"
 }
 ```
 
@@ -39,8 +39,8 @@ Multiple conventions can be applied to the same project:
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.kotlin-module") version "1.0"
-    id("com.ingsisbry.editor-config") version "1.0"
+    id("com.ingsisbry.kotlin-module") version "1.0.0"
+    id("com.ingsisbry.editor-config") version "1.0.0"
 }
 ```
 
@@ -62,7 +62,7 @@ inside a local convention plugin and then expose its own project-specific plugin
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.kotlin-module") version "1.0"
+    id("com.ingsisbry.kotlin-module") version "1.0.0"
 }
 ```
 
@@ -83,7 +83,7 @@ The convention also configures JaCoCo with version `0.8.15`.
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.kotlin-application") version "1.0"
+    id("com.ingsisbry.kotlin-application") version "1.0.0"
 }
 ```
 
@@ -93,11 +93,23 @@ It also configures the `run` task to use the root project directory as its worki
 
 This is useful for applications whose runtime expects files or paths relative to the repository root.
 
+### Spring Boot application
+
+```kotlin
+plugins {
+    id("com.ingsisbry.spring-boot-application") version "1.0.0"
+}
+```
+
+Builds on top of `com.ingsisbry.kotlin-application` and applies the Spring Boot Gradle plugin.
+
+The convention provides the shared setup required by Spring Boot applications while keeping the underlying Kotlin application conventions available to consuming projects.
+
 ### Detekt
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.detekt") version "1.0"
+    id("com.ingsisbry.detekt") version "1.0.0"
 }
 ```
 
@@ -121,7 +133,7 @@ The shared convention fails the build when Detekt reports findings.
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.coverage-aggregation") version "1.0"
+    id("com.ingsisbry.coverage-aggregation") version "1.0.0"
 }
 ```
 
@@ -153,7 +165,7 @@ The verification task is also attached to the root `check` task.
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.git-hooks") version "1.0"
+    id("com.ingsisbry.git-hooks") version "1.0.0"
 }
 ```
 
@@ -191,7 +203,7 @@ This allows the convention to provide a default hook without requiring every con
 
 ```kotlin
 plugins {
-    id("com.ingsisbry.editor-config") version "1.0"
+    id("com.ingsisbry.editor-config") version "1.0.0"
 }
 ```
 
@@ -251,7 +263,7 @@ config/
 
 Other project-specific Gradle configuration can remain in the consuming repository instead of being added to this shared repository.
 
-The goal is to centralize configuration that should be consistent across projects, not to eliminate project-specific configuration entirely.
+The goal is to centralize practices that should be consistent across projects, not to eliminate project-specific configuration entirely.
 
 ## Development
 
@@ -297,6 +309,7 @@ For example:
 com.ingsisbry.kotlin-module
 com.ingsisbry.detekt
 com.ingsisbry.git-hooks
+com.ingsisbry.spring-boot-application
 ```
 
 all resolve to the corresponding convention implementation in this repository.
@@ -306,7 +319,7 @@ all resolve to the corresponding convention implementation in this repository.
 The project version can be provided through the `releaseVersion` Gradle property:
 
 ```bash
-./gradlew publish -PreleaseVersion=1.0
+./gradlew publish -PreleaseVersion=1.0.0
 ```
 
 The project uses the provided version without a leading `v`.
@@ -314,13 +327,13 @@ The project uses the provided version without a leading `v`.
 For example:
 
 ```bash
--PreleaseVersion=v1.0
+-PreleaseVersion=v1.0.0
 ```
 
 is published as:
 
 ```text
-1.0
+1.0.0
 ```
 
 ## Repository structure
@@ -337,7 +350,8 @@ gradle-conventions/
 │   │   │           ├── editor-config.gradle.kts
 │   │   │           ├── git-hooks.gradle.kts
 │   │   │           ├── kotlin-application.gradle.kts
-│   │   │           └── kotlin-module.gradle.kts
+│   │   │           ├── kotlin-module.gradle.kts
+│   │   │           └── spring-boot-application.gradle.kts
 │   │   └── resources/
 │   │       ├── detekt/
 │   │       │   └── detekt.yml

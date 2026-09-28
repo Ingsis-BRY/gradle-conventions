@@ -7,7 +7,7 @@ plugins {
 group = "com.ingsisbry"
 version = (
         findProperty("releaseVersion") as String?
-            ?: "1.0"
+            ?: "1.0.0"
         ).removePrefix("v")
 
 repositories {
@@ -22,6 +22,7 @@ dependencies {
         "org.jlleitschuh.gradle.ktlint:" +
                 "org.jlleitschuh.gradle.ktlint.gradle.plugin:14.2.0"
     )
+    implementation("org.springframework.boot:spring-boot-gradle-plugin:4.1.1")
 }
 
 publishing {
