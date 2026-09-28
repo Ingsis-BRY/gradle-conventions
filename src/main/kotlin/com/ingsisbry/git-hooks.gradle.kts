@@ -1,27 +1,30 @@
 package com.ingsisbry
 
-val preCommitSource = rootProject.file("scripts/pre-commit")
+val pluginClassLoader = this::class.java.classLoader
 val gitHook = rootProject.file(".git/hooks/pre-commit")
 
 tasks.register("installGitHook") {
     doLast {
-        val resource = javaClass.classLoader.getResourceAsStream(
+        if (gitHook.exists()) {
+            println("Git hook already exists: ${gitHook.absolutePath}")
+            return@doLast
+        }
+
+        val resource = pluginClassLoader.getResourceAsStream(
             "git-hooks/pre-commit"
         ) ?: error(
             "Could not find default pre-commit hook: " +
                     "git-hooks/pre-commit"
         )
 
-        preCommitSource.parentFile.mkdirs()
+        gitHook.parentFile.mkdirs()
 
         resource.use { input ->
-            preCommitSource.outputStream().use { output ->
+            gitHook.outputStream().use { output ->
                 input.copyTo(output)
             }
         }
 
-        gitHook.parentFile.mkdirs()
-        preCommitSource.copyTo(gitHook, overwrite = true)
         gitHook.setExecutable(true)
     }
 }
