@@ -1,3 +1,5 @@
+package com.ingsisbry
+
 plugins {
     base
     jacoco

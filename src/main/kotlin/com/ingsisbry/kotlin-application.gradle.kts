@@ -1,5 +1,7 @@
+package com.ingsisbry
+
 plugins {
-    id("kotlin-module")
+    id("com.ingsisbry.kotlin-module")
     application
 }
 

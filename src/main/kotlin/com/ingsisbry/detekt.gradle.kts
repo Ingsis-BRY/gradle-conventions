@@ -1,3 +1,7 @@
+package com.ingsisbry
+
+import dev.detekt.gradle.Detekt
+
 plugins {
     id("dev.detekt")
 }
@@ -27,7 +31,7 @@ val extractDefaultDetektConfig = tasks.register(
     }
 }
 
-tasks.withType<dev.detekt.gradle.Detekt>().configureEach {
+tasks.withType<Detekt>().configureEach {
     val customDetektConfig = rootProject.file(
         "config/detekt/detekt.yml"
     )

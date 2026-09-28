@@ -1,3 +1,5 @@
+package com.ingsisbry
+
 val preCommitSource = rootProject.file("scripts/pre-commit")
 val gitHook = rootProject.file(".git/hooks/pre-commit")
 

@@ -1,6 +1,8 @@
+package com.ingsisbry
+
 plugins {
     kotlin("jvm")
-    id("detekt")
+    id("dev.detekt")
     id("org.jlleitschuh.gradle.ktlint")
     jacoco
 }

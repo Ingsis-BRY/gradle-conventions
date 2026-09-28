@@ -1,3 +1,5 @@
+package com.ingsisbry
+
 val editorConfig = rootProject.file(".editorconfig")
 
 tasks.register("installEditorConfig") {
