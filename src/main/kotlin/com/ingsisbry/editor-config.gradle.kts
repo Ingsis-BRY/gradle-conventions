@@ -1,5 +1,6 @@
 package com.ingsisbry
 
+val pluginClassLoader = this::class.java.classLoader
 val editorConfig = rootProject.file(".editorconfig")
 
 tasks.register("installEditorConfig") {
@@ -8,7 +9,7 @@ tasks.register("installEditorConfig") {
             return@doLast
         }
 
-        val resource = javaClass.classLoader.getResourceAsStream(
+        val resource = pluginClassLoader.getResourceAsStream(
             "editorconfig/.editorconfig"
         ) ?: error(
             "Could not find default .editorconfig: " +
