@@ -16,7 +16,7 @@ repositories {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.10")
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:2.3.21")
     implementation("dev.detekt:dev.detekt.gradle.plugin:2.0.0-alpha.3")
     implementation(
         "org.jlleitschuh.gradle.ktlint:" +
