@@ -1,9 +1,10 @@
 package com.ingsisbry
 
 plugins {
-    id("com.ingsisbry.kotlin-application")
+    kotlin("jvm")
     id("org.springframework.boot")
     id("io.spring.dependency-management")
+    kotlin("plugin.spring")
 }
 
 dependencies {
