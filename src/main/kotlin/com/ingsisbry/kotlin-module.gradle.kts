@@ -2,9 +2,6 @@ package com.ingsisbry
 
 plugins {
     kotlin("jvm")
-    id("dev.detekt")
-    id("org.jlleitschuh.gradle.ktlint")
-    jacoco
 }
 
 repositories {
@@ -17,16 +14,4 @@ kotlin {
 
 java {
     withSourcesJar()
-}
-
-jacoco {
-    toolVersion = "0.8.15"
-}
-
-dependencies {
-    testImplementation(kotlin("test"))
-}
-
-tasks.test {
-    useJUnitPlatform()
 }

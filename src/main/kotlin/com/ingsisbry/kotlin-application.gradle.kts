@@ -1,7 +1,7 @@
 package com.ingsisbry
 
 plugins {
-    id("com.ingsisbry.kotlin-module")
+    id("com.ingsisbry.kotlin-quality")
     application
 }
 
