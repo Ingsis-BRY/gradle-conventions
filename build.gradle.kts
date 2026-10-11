@@ -5,10 +5,11 @@ plugins {
 }
 
 group = "com.ingsisbry"
-version = (
-        findProperty("releaseVersion") as String?
-            ?: "1.0.0"
-        ).removePrefix("v")
+
+version = providers.gradleProperty("releaseVersion")
+    .map { it.removePrefix("v") }
+    .orElse("0.0.0-SNAPSHOT")
+    .get()
 
 repositories {
     mavenCentral()
